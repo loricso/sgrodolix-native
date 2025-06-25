@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sgrodolix_native/views/search_form.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
           ),
           displayMedium: GoogleFonts.poppins(
             fontSize: 20,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
           ),
           labelSmall: GoogleFonts.poppins(
             fontSize: 16,
@@ -54,107 +55,10 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var colors = Theme.of(context).colorScheme;
-    var texts = Theme.of(context).textTheme;
-
     return Scaffold(
-      backgroundColor: colors.surface,
-      body: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RichText(
-              text: TextSpan(
-                style: texts.headlineMedium,
-                children: <TextSpan>[
-                  TextSpan(text: 'Sgrodolix Native'),
-                  TextSpan(
-                    text: '.',
-                    style: texts.headlineMedium!.copyWith(
-                      color: colors.primary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 24),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 8, bottom: 4),
-                  child: Text("Canzone", style: texts.labelSmall),
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(16),
-                    filled: true,
-                    fillColor: colors.secondary,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide.none,
-                    ),
-                    hintText: 'basta',
-                    hintStyle: texts.bodyMedium!.copyWith(
-                      color: colors.onSecondary.withValues(alpha: 0.8),
-                    ),
-                  ),
-                  style: texts.bodyMedium!.copyWith(color: colors.onSecondary),
-                ),
-              ],
-            ),
-            SizedBox(height: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 8, bottom: 4),
-                  child: Text("Autore", style: texts.labelSmall),
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(16),
-                    filled: true,
-                    fillColor: colors.secondary,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide.none,
-                    ),
-                    hintText: 'primastanzaadestra',
-                    hintStyle: texts.bodyMedium!.copyWith(
-                      color: colors.onSecondary.withValues(alpha: 0.8),
-                    ),
-                  ),
-                  style: texts.bodyMedium!.copyWith(color: colors.onSecondary),
-                ),
-              ],
-            ),
-            SizedBox(height: 28),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: colors.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8), // Bordi arrotondati
-                  ),
-                  fixedSize: const Size(
-                    double.infinity,
-                    64,
-                  ), // Bottone quadrato
-                ),
-                child: Text(
-                  "Cerca al Volo",
-                  style: texts.displayMedium!.copyWith(color: colors.onPrimary),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: Padding(padding: const EdgeInsets.all(32), child: SearchForm()),
     );
   }
 }
+
