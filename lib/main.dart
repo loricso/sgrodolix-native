@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sgrodolix_native/models/search_model.dart';
+import 'package:sgrodolix_native/viewmodels/song_viewmodel.dart';
 import 'package:sgrodolix_native/views/search_form.dart';
 
 void main() {
@@ -45,7 +48,10 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const Main(),
+      home: ChangeNotifierProvider(
+        create: (context) => SongViewModel(SearchModel()),
+        child: const Main(),
+      ),
     );
   }
 }
@@ -61,4 +67,3 @@ class Main extends StatelessWidget {
     );
   }
 }
-

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sgrodolix_native/models/search_model.dart';
 import 'package:sgrodolix_native/viewmodels/song_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class SearchForm extends StatefulWidget {
   const SearchForm({super.key});
@@ -20,31 +20,26 @@ class _SearchFormState extends State<SearchForm> {
     final songInput = TextEditingController();
     final authorInput = TextEditingController();
 
-    final songViewModel = SongViewModel(SearchModel());
-
     return Form(
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ListenableBuilder(
-            listenable: songViewModel,
-            builder: (context, child) {
-              return Column(
-                children: [
-                  if (songViewModel.errorMessage != null)
-                    Text(
-                      'Error: ${songViewModel.errorMessage}',
-                      style: Theme.of(
-                        context,
-                      ).textTheme.labelSmall?.apply(color: Colors.red),
-                    ),
-                  if (songViewModel.data != null)
-                    Text('${songViewModel.data!.title}, that\'s what i\'ve found'),
-                ],
-              );
-            },
+          Consumer<SongViewModel>(
+            builder: (context, vm, child) => Column(
+              children: [
+                if (vm.errorMessage != null)
+                  Text(
+                    'Error: ${vm.errorMessage}',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelSmall?.apply(color: Colors.red),
+                  ),
+                if (vm.data != null)
+                  Text('${vm.data!.title}, that\'s what i\'ve found'),
+              ],
+            ),
           ),
           RichText(
             text: TextSpan(
@@ -130,7 +125,10 @@ class _SearchFormState extends State<SearchForm> {
             child: ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  songViewModel.search(songInput.text, authorInput.text);
+                  Provider.of<SongViewModel>(
+                    context,
+                    listen: false,
+                  ).search(songInput.text, authorInput.text);
                 }
               },
               style: ElevatedButton.styleFrom(
