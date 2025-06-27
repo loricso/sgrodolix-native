@@ -47,3 +47,4 @@ class SearchModel {
     return SongData.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
   }
 }
+
