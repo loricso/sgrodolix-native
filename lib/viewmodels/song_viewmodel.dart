@@ -4,20 +4,28 @@ import 'package:sgrodolix_native/models/search_model.dart';
 
 class SongViewModel extends ChangeNotifier {
   final SearchModel model = SearchModel();
-  String? errorMessage;
 
-  Future<SongData?> search(String song, String author) async {
+  SongData? data;
+  String? errorMessage;
+  bool isLoading = false;
+
+  Future<void> search(String song, String author) async {
+    isLoading = true;
+    notifyListeners();
+
     try {
-      return await model.searchSong(song, author);
+      data = await model.searchSong(song, author);
+      errorMessage = null;
     } catch (e) {
+      data = null;
       if (e.toString().contains("Not Found")) {
         errorMessage = 'Song not found.';
       } else {
         errorMessage = 'Something went wrong.';
       }
-
+    } finally {
+      isLoading = false;
       notifyListeners();
-      return null;
     }
   }
 }

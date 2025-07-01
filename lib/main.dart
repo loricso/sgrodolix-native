@@ -18,17 +18,9 @@ class MyApp extends StatelessWidget {
       theme: appTheme,
       home: ChangeNotifierProvider(
         create: (context) => SongViewModel(),
-        child: const Main(),
+        child: const SearchPage(),
       ),
     );
   }
 }
 
-class Main extends StatelessWidget {
-  const Main({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SearchPage();
-  }
-}

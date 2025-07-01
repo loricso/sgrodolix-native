@@ -21,7 +21,7 @@ class InputWithLabel extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 8, bottom: 4),
+          padding: const EdgeInsets.only(left: 12, bottom: 2),
           child: Text(label, style: texts.labelSmall),
         ),
         TextFormField(
@@ -33,7 +33,7 @@ class InputWithLabel extends StatelessWidget {
             return null;
           },
           decoration: InputDecoration(
-            contentPadding: const EdgeInsets.all(16),
+            contentPadding: const EdgeInsets.fromLTRB(12, 16, 12, 16),
             filled: true,
             fillColor: colors.secondary,
             border: OutlineInputBorder(
@@ -44,6 +44,8 @@ class InputWithLabel extends StatelessWidget {
             hintStyle: texts.bodyMedium!.copyWith(
               color: colors.onSecondary.withValues(alpha: 0.8),
             ),
+
+            errorStyle: texts.labelSmall!.copyWith(color: colors.error),
           ),
           style: texts.bodyMedium!.copyWith(color: colors.onSecondary),
         ),
@@ -51,4 +53,3 @@ class InputWithLabel extends StatelessWidget {
     );
   }
 }
-

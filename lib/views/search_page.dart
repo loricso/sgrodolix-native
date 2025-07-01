@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sgrodolix_native/viewmodels/song_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:sgrodolix_native/views/input_with_label.dart';
+import 'package:sgrodolix_native/views/lyrics_page.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -24,6 +25,7 @@ class SearchForm extends StatefulWidget {
 
 class _SearchFormState extends State<SearchForm> {
   final _formKey = GlobalKey<FormState>();
+  bool _navigated = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +41,36 @@ class _SearchFormState extends State<SearchForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Consumer<SongViewModel>(
-            builder: (context, vm, child) => Column(
-              children: [
-                if (vm.errorMessage != null)
-                  Text(
-                    'Error: ${vm.errorMessage}',
-                    style: Theme.of(
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: 100),
+            child: Consumer<SongViewModel>(
+              builder: (context, vm, child) {
+                if (vm.data != null && !vm.isLoading && !_navigated) {
+                  _navigated = true;
+
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    Navigator.push(
                       context,
-                    ).textTheme.labelSmall?.apply(color: Colors.red),
-                  ),
-              ],
+                      MaterialPageRoute(
+                        builder: (context) => LyricsPage(title: vm.data!.title),
+                      ),
+                    ).then((_) {
+                      _navigated = false;
+                    });
+                  });
+                }
+
+                if (vm.errorMessage == null) {
+                  return SizedBox(height: 0, width: 0);
+                }
+
+                return Text(
+                  'Error: ${vm.errorMessage}',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelSmall?.apply(color: Colors.red),
+                );
+              },
             ),
           ),
 
@@ -86,34 +107,40 @@ class _SearchFormState extends State<SearchForm> {
 
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  var data = await Provider.of<SongViewModel>(
-                    context,
-                    listen: false,
-                  ).search(songInput.text, authorInput.text);
-                  if (data != null) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Placeholder(),
-                      ),
-                    );
-                  }
-                }
+            child: Consumer<SongViewModel>(
+              builder: (context, vm, child) {
+                return ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate() && !vm.isLoading) {
+                      vm.search(songInput.text, authorInput.text);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    fixedSize: const Size(double.infinity, 64),
+                  ),
+                  child: vm.isLoading
+                      ? SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              colors.onPrimary,
+                            ),
+                          ),
+                        )
+                      : Text(
+                          "Cerca al Volo",
+                          style: texts.displayMedium!.copyWith(
+                            color: colors.onPrimary,
+                          ),
+                        ),
+                );
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: colors.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                fixedSize: const Size(double.infinity, 64),
-              ),
-              child: Text(
-                "Cerca al Volo",
-                style: texts.displayMedium!.copyWith(color: colors.onPrimary),
-              ),
             ),
           ),
         ],
