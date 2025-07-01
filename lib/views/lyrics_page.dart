@@ -10,12 +10,17 @@ class LyricsPage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(title, style: Theme.of(context).textTheme.displayLarge),
+        Text(title, style: Theme.of(context).textTheme.headlineMedium),
         TextButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text("torna indietrol"),
+          child: Text(
+            "torna indietrol",
+            style: Theme.of(context).textTheme.displayMedium!.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
         ),
       ],
     );
