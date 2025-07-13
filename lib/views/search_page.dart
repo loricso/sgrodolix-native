@@ -52,7 +52,7 @@ class _SearchFormState extends State<SearchForm> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LyricsPage(title: vm.data!.title),
+                        builder: (context) => LyricsPage(data: vm.data!),
                       ),
                     ).then((_) {
                       _navigated = false;

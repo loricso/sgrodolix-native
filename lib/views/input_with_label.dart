@@ -42,7 +42,7 @@ class InputWithLabel extends StatelessWidget {
             ),
             hintText: placeholder,
             hintStyle: texts.bodyMedium!.copyWith(
-              color: colors.onSecondary.withValues(alpha: 0.8),
+              color: colors.onSecondary.withValues(alpha: 0.6),
             ),
 
             errorStyle: texts.labelSmall!.copyWith(color: colors.error),

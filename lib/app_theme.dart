@@ -27,4 +27,3 @@ final appTheme = ThemeData(
     labelSmall: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
   ),
 );
-
